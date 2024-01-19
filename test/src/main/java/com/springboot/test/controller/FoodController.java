@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.test.model.Ingredient;
 import com.springboot.test.model.Meal;
 import com.springboot.test.payload.request.FoodRequest;
+import com.springboot.test.payload.response.MealResponse;
 import com.springboot.test.service.IngredientService;
+import com.springboot.test.service.MealResponseService;
 import com.springboot.test.service.MealService;
 
 @RestController
@@ -35,6 +37,9 @@ public class FoodController {
 	
 	@Autowired
 	IngredientService ingredientService;
+	
+	@Autowired
+	MealResponseService mealResponseService;
 	
 	@PostMapping("")
 	public ResponseEntity<Meal> registerFood(@RequestBody Meal foodRequest) {
@@ -55,8 +60,43 @@ public class FoodController {
 		return ResponseEntity.ok(meal);
 	}
 	
+//	@PostMapping("")
+//	public MealResponse registerFood(@RequestBody Meal foodRequest) {
+//		List<Ingredient> ingredients = foodRequest.getIngredients();
+//		List<Long> ingredientIds = new ArrayList<>();
+//		for(Ingredient item : ingredients) {
+//			Ingredient savedIng = ingredientService.register(item);
+//			ingredientIds.add(savedIng.getId());
+//		}
+//		
+//		Meal mealRequest = new Meal();
+//		mealRequest.setName(foodRequest.getName());
+//		mealRequest.setArea(foodRequest.getArea());
+//		mealRequest.setDescriptions(foodRequest.getDescriptions());
+//		mealRequest.setTutorialLink(foodRequest.getTutorialLink());
+//		Meal meal = mealService.register(mealRequest, ingredientIds);
+//		
+//		MealResponse response = new MealResponse();
+//		String res = "";
+//		if(meal.getIngredients() == null) {
+//			response.setErrorCode(mealResponseService.getByCode(1000).getErrorCode());
+//		} else if(meal.getIngredients().size() == 0) {
+//			response.setErrorCode(mealResponseService.getByCode(1001).getErrorCode());
+//		} else if(meal.getName() == null) {
+//			response.setErrorCode(mealResponseService.getByCode(1002).getErrorCode());
+//		} else if(meal.getTutorialLink() == null) {
+//			response.setErrorCode(mealResponseService.getByCode(1003).getErrorCode());
+//		} else {
+//			response.setOk(true);
+//			res = response.isOk() + meal;
+//			return res;
+//		}
+//		
+//		return response;
+//	}
+	
 	@GetMapping("")
-	public ResponseEntity<Page<Meal>> getFood(@RequestParam String keyword,
+	public ResponseEntity<Page<Meal>> getFood(@RequestParam("keyword") String keyword,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "9") int size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
