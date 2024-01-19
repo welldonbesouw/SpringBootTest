@@ -1,8 +1,11 @@
 package com.springboot.test.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,11 @@ public class UserService {
 	public User registerUser(RegisterRequest registerRequest) {
 		User user = new User();
 		user.setEmail(registerRequest.getEmail());
-		user.setPassword(encoder.encode(registerRequest.getPassword()));
+		
+		List<String> errorList = new ArrayList<>();
+		
+		user.setPassword(encoder.encode(registerRequest.getPassword()));			
+		
 		Set<String> strRoles = registerRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 
@@ -86,6 +93,36 @@ public class UserService {
 
 		user.setRoles(roles);
 		return user;
+		
+	}
+	
+	public static boolean isValid(String password, List<String> errorList) {
+
+	    Pattern upperCasePatten = Pattern.compile("[A-Z ]");
+	    Pattern digitCasePatten = Pattern.compile("[0-9 ]");
+	    errorList.clear();
+
+	    boolean flag=true;
+
+	    if (password.length() < 8) {
+	        errorList.add("Password is too short");
+	        flag=false;
+	        return flag;
+	    }
+
+	    if (!upperCasePatten.matcher(password).find()) {
+	        errorList.add("Password should contain at least 1 uppercase letter");
+	        flag=false;
+	        return flag;
+	    }
+	    if (!digitCasePatten.matcher(password).find()) {
+	        errorList.add("Password should contain letter and number");
+	        flag=false;
+	        return flag;
+	    }
+
+	    return flag;
+
 	}
 
 	public boolean existsByUsername(String username) {

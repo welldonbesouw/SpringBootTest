@@ -121,12 +121,12 @@ public class FoodController {
 	public ResponseEntity<Meal> updateFood(@PathVariable UUID id, @RequestBody FoodRequest foodRequest) {
 		Meal previousMeal = mealService.getById(id);
 		Meal updatedMeal = mealService.update(id,foodRequest);
-		List<String> response = new ArrayList<>();
-		if(!previousMeal.getName().equals(updatedMeal.getName())) response.add(updatedMeal.getName());
-		if(!previousMeal.getTutorialLink().equals(updatedMeal.getTutorialLink())) response.add(updatedMeal.getTutorialLink());
-		if(!previousMeal.getArea().equals(updatedMeal.getArea())) response.add(updatedMeal.getArea());
-		List<Ingredient> prevIng = previousMeal.getIngredients();
-		List<Ingredient> updtIng = updatedMeal.getIngredients();
+//		List<String> response = new ArrayList<>();
+//		if(!previousMeal.getName().equals(updatedMeal.getName())) response.add(updatedMeal.getName());
+//		if(!previousMeal.getTutorialLink().equals(updatedMeal.getTutorialLink())) response.add(updatedMeal.getTutorialLink());
+//		if(!previousMeal.getArea().equals(updatedMeal.getArea())) response.add(updatedMeal.getArea());
+//		List<Ingredient> prevIng = previousMeal.getIngredients();
+//		List<Ingredient> updtIng = updatedMeal.getIngredients();
 		
 		return ResponseEntity.ok(updatedMeal);
 	}
